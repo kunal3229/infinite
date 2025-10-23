@@ -36,5 +36,10 @@ public class FI {
         Supplier<Double> randomValue = Math::random;
         System.out.println(randomValue.get());
 
+        UnaryOperator<Integer> squareOp = a -> a*a;
+        BinaryOperator<Integer> sumOp = Integer::sum;
+        System.out.println(squareOp.apply(5));
+        System.out.println(sumOp.apply(5, 10));
+
     }
 }

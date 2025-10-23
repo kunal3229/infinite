@@ -2,6 +2,7 @@ package com.example.kunal.basics.java8;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 public class StreamEx {
@@ -10,6 +11,7 @@ public class StreamEx {
         // Stream Creation
         // From Collections
         List<String> list = Arrays.asList("EA", "Sports", "HYD");
+
         Stream<String> stream = list.stream();
         Stream<String> parallelStream = list.parallelStream();
         // From Arrays
@@ -42,5 +44,30 @@ public class StreamEx {
         long count = words.stream().filter(s -> s.length() > 5).count();
         boolean anyMatch = words.stream().anyMatch(s -> s.startsWith("a"));
         boolean allMatch = words.stream().allMatch(s -> s.startsWith("a"));
+
+        // Parallel Streams
+        long start = System.currentTimeMillis();
+        List<Integer> bigList = Stream.iterate(1, n -> n + 1).limit(20000).toList();
+        List<Long> factorialStream = bigList.stream().map(StreamEx::factorial).toList();
+        long end = System.currentTimeMillis();
+        System.out.println("Time taken in sequential stream: " + (end - start) + " ms");
+
+        long pStart = System.currentTimeMillis();
+        List<Long> parallelFactorialStream = bigList.parallelStream().map(StreamEx::factorial).toList();
+        long pEnd = System.currentTimeMillis();
+        System.out.println("Time taken in parallel stream: " + (pEnd - pStart) + " ms");
+
+        // Cumulative output
+        List<Integer> numbers = List.of(1, 2, 3, 4, 5);
+        AtomicInteger cumulativeSum = new AtomicInteger(0);
+        List<Integer> cumulativeList = numbers.stream()
+                .map(cumulativeSum::addAndGet)
+                .toList();
+        System.out.println("Cumulative Sum List: " + cumulativeList);
+    }
+
+    private static Long factorial(Integer n) {
+        if (n == 0 || n == 1) return 1L;
+        return n * factorial(n - 1);
     }
 }
