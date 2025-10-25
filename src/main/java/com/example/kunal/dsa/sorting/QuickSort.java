@@ -1,38 +1,40 @@
 package com.example.kunal.dsa.sorting;
 
+import java.util.Arrays;
+
 public class QuickSort {
 
+    public static void main(String[] args) {
+        int[] arr = new int[]{3,6,5,8,9,1,2,7};
+        System.out.println(Arrays.toString(arr));
+        quickSort(arr, 0, arr.length-1);
+        System.out.println(Arrays.toString(arr));
+    }
+
     private static void quickSort(int[] arr, int low, int high) {
-        if (low < high){
-            int pivotIdx = partition(arr, low, high);
-            quickSort(arr, low, pivotIdx - 1);
-            quickSort(arr, pivotIdx + 1, high);
+        if(low < high){
+            int idx = partition(arr, low, high);
+            quickSort(arr, low, idx-1);
+            quickSort(arr, idx+1, high);
         }
     }
 
     private static int partition(int[] arr, int low, int high) {
-        int pivot = arr[high];
-        int i = low - 1;
-        for (int j = low; j < high; j++){
-            if (arr[j] < pivot){
-                i++;
-                int temp = arr[i];
-                arr[i] = arr[j];
-                arr[j] = temp;
+        int left = low;
+        int right = high;
+        int pivot = arr[low];
+        for(int i = high; i > low; i--){
+            if (arr[i] > pivot){
+                swapEle(arr, i, right--);
             }
         }
-        int temp = arr[i + 1];
-        arr[i + 1] = arr[high];
-        arr[high] = temp;
-        return i + 1;
+        swapEle(arr, left, right);
+        return right;
     }
 
-    public static void main(String[] args) {
-        int[] arr = {10, 7, 8, 9, 1, 5};
-        quickSort(arr, 0, arr.length - 1);
-        System.out.println("Sorted array:");
-        for (int num : arr) {
-            System.out.print(num + " ");
-        }
+    private static void swapEle(int[] arr, int i, int j) {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
     }
 }
