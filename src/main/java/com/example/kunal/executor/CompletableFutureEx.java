@@ -25,9 +25,7 @@ public class CompletableFutureEx {
 
         // With Custom Executor
         ExecutorService customExecutor = Executors.newFixedThreadPool(10);
-        CompletableFuture<String> executeFuture = CompletableFuture.supplyAsync(() -> {
-            return "Using Custom Executor";
-        },  customExecutor);
+        CompletableFuture<String> executeFuture = CompletableFuture.supplyAsync(() -> "Using Custom Executor",  customExecutor);
 
         // Chaining Operations
         // thenApply - transforms result (returns new value)
